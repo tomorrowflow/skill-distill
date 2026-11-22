@@ -15,7 +15,9 @@ This script does the bookkeeping that must not drift between iterations:
   accept    record the user's decision and copy the accepted skill to final/
 
 Run layout (RUN is any directory, e.g. runs/<task>):
-  run.json          settings          prompt.md        the original task prompt, verbatim
+  run.json          settings          prompt.md        the original task prompt, verbatim; {{WORKSPACE}}
+                                                       becomes the trial's workspace path (for prompts that
+                                                       name the reference's working directory)
   reference/        reference.md, reference.json, evidence/
   skill/            the student skill being edited (SKILL.md + scripts/ ...)
   checks.sh         optional task checks; gets WORKSPACE, OUT; exit 0 = pass
@@ -141,7 +143,7 @@ def cmd_trial(a):
         with open(t / "workspace" / ".git" / "info" / "exclude", "a") as f:
             f.write("\n.skill/\n")
         (t / "trace").mkdir()
-        (t / "prompt.md").write_text(prompt)
+        (t / "prompt.md").write_text(prompt.replace("{{WORKSPACE}}", str(t / "workspace")))
         env = {"WORKSPACE": t / "workspace", "PROMPT_FILE": t / "prompt.md", "MODEL": cfg["model"],
                "TRACE_DIR": t / "trace", "STUDENT_ARGS": cfg["student_args"], "TRACK_EXEMPT": "1", **cfg["env"]}
         exports = "\n".join(f"export {k}={json.dumps(str(v))}" for k, v in env.items())

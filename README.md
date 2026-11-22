@@ -67,6 +67,7 @@ students work with `tmux attach -t distill-<task>`.
 | omp (oh-my-pi) | tested |
 | Codex CLI | tested as the teacher; as a student needs a provider in `STUDENT_ARGS` |
 | Claude Code | written; open models need `ANTHROPIC_BASE_URL` to an Anthropic-compatible server |
+| Claude Code on Ollama (`claude-ollama`) | open model behind Ollama's Anthropic API; isolated config dir, reference settings and skills kept |
 | pi | written, untested |
 | opencode | written, untested; its JSON log has no parser in `extract_session.py` yet |
 
