@@ -10,7 +10,9 @@ claude -p --dangerously-skip-permissions --output-format stream-json --verbose $
 for l in sys.stdin:
     try: o=json.loads(l)
     except Exception: continue
-    for b in (o.get("message") or {}).get("content") or []:
+    m=o.get("message") if isinstance(o,dict) else None
+    c=m.get("content") if isinstance(m,dict) else None
+    for b in c if isinstance(c,list) else []:
         if isinstance(b,dict) and b.get("type")=="text": print("agent:",b["text"][:400],flush=True)
         elif isinstance(b,dict) and b.get("type")=="tool_use": print("tool:",b.get("name"),json.dumps(b.get("input"))[:200],flush=True)'
 exit ${PIPESTATUS[0]}
